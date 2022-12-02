@@ -33,7 +33,6 @@ async function run() {
     //get user
     app.get("/users", async (req, res) => {
       let query = {};
-      console.log(req.query);
       if (req.query.email) {
         query = {
           email: req.query.email,
@@ -53,6 +52,24 @@ async function run() {
       const user = req.body;
       const result = await productsCollection.insertOne(user);
       res.send(result);
+    });
+
+    //get prods
+    app.get("/products", async (req, res) => {
+      let query = {};
+      console.log(req.query);
+      if (req.query.sellerEmail) {
+        query = {
+          sellerEmail: req.query.sellerEmail,
+        };
+      }
+      if (req.query.category) {
+        query = {
+          category: req.query.category,
+        };
+      }
+      const prods = await productsCollection.find(query).toArray();
+      res.send(prods);
     });
   } finally {
   }
