@@ -47,6 +47,27 @@ async function run() {
       res.send(users);
     });
 
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: ObjectId(id) };
+      const result = await usersCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    app.patch("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const status = req.body.status;
+      const query = { _id: ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+          status,
+        },
+      };
+      const result = await usersCollection.updateOne(query, updatedDoc);
+      res.send(result);
+    });
+
     // to add products to db
     app.post("/products", async (req, res) => {
       const user = req.body;
